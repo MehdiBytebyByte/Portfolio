@@ -1,0 +1,76 @@
+{
+    "skills": {
+        "languages": [
+            {
+                "name": "c",
+                "level": 100,
+                "color": "#3776AB"
+            },
+            {
+                "name": "Java",
+                "level": 20,
+                "color": "#007396"
+            },
+            {
+                "name": "C++",
+                "level": 60,
+                "color": "#00599C"
+            },
+            {
+                "name": "jss",
+                "level": 20,
+                "color": "#00599C"
+            },
+            {
+                "name": "Bash",
+                "level": 70,
+                "color": "#4EAA6A"
+            }
+        ],
+        "frameworks": [
+            {
+                "name": "React",
+                "level": 45,
+                "color": "#61DAFB"
+            },
+            {
+                "name": "Node.js",
+                "level": 40,
+                "color": "#339933"
+            }
+        ],
+        "tools": [
+            {
+                "name": "Git",
+                "level": 100,
+                "color": "#F05032"
+            }
+        ]
+    },
+    "projects": [
+        {
+            "title": "AI-Powered Portfolio",
+            "description": "A dynamic portfolio website built with modern web technologies, featuring interactive skill visualization and project showcases.",
+            "technologies": ["HTML5", "CSS3", "JavaScript", "JSON"],
+            "github": "https://github.com/yourusername/portfolio"
+        },
+        {
+            "title": "E-commerce Platform",
+            "description": "Full-stack e-commerce platform with user authentication, product management, and payment integration.",
+            "technologies": ["React", "Node.js", "MongoDB", "Stripe"],
+            "github": "https://github.com/yourusername/ecommerce"
+        },
+        {
+            "title": "Task Management System",
+            "description": "Collaborative task management system with real-time updates and team collaboration features.",
+            "technologies": ["Django", "PostgreSQL", "WebSocket", "Redis"],
+            "github": "https://github.com/yourusername/taskmanager"
+        },
+        {
+            "title": "Weather Dashboard",
+            "description": "Real-time weather dashboard with location-based forecasts and interactive weather maps.",
+            "technologies": ["React", "OpenWeather API", "Mapbox", "Chart.js"],
+            "github": "https://github.com/yourusername/weather-dashboard"
+        }
+    ]
+}

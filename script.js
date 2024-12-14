@@ -281,64 +281,163 @@ function initRocket() {
     updateRocketPosition();
 }
 
-// Skills Graph
-const skillsGraph = {
-    container: document.querySelector('.skills-graph'),
-    skills: [],
-
-    init() {
-        this.loadSkills();
-        this.setupEventListeners();
-    },
-
-    setupEventListeners() {
-        window.addEventListener('skillsUpdated', (event) => {
-            this.skills = event.detail;
-            this.renderSkills();
-        });
-
-        // Initial load from localStorage
-        const savedSkills = JSON.parse(localStorage.getItem('skills') || '[]');
-        if (savedSkills.length > 0) {
-            this.skills = savedSkills;
-            this.renderSkills();
-        }
-    },
-
-    renderSkills() {
-        if (!this.container) return;
-
-        this.container.innerHTML = this.skills.map(skill => `
-            <div class="skill-bar" data-aos="fade-right">
-                <span class="skill-name">${skill.name}</span>
-                <div class="skill-progress">
-                    <div class="skill-progress-bar" style="width: ${skill.level}%"></div>
-                </div>
-                <span class="skill-percentage">${skill.level}%</span>
-            </div>
-        `).join('');
-
-        // Animate progress bars on scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const bar = entry.target.querySelector('.skill-progress-bar');
-                    const width = bar.style.width;
-                    bar.style.width = '0';
-                    setTimeout(() => {
-                        bar.style.width = width;
-                    }, 100);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        document.querySelectorAll('.skill-bar').forEach(bar => observer.observe(bar));
-    }
-};
-
-// Initialize components
+// Initialize space background and rocket
 document.addEventListener('DOMContentLoaded', () => {
     initSpaceBackground();
     initRocket();
-    skillsGraph.init();
+});
+
+// Load and render skills and projects
+async function loadPortfolioData() {
+    try {
+        const response = await fetch('data.json');
+        const data = await response.json();
+        renderSkills(data.skills);
+        renderProjects(data.projects);
+        createSkillGraph(data.skills);
+    } catch (error) {
+        console.error('Error loading portfolio data:', error);
+    }
+}
+
+function createSkillGraph(skills) {
+    const ctx = document.getElementById('skillGraph').getContext('2d');
+    
+    // Prepare data for the graph
+    const allSkills = [
+        ...skills.languages.map(s => ({ ...s, category: 'Languages' })),
+        ...skills.frameworks.map(s => ({ ...s, category: 'Frameworks' })),
+        ...skills.tools.map(s => ({ ...s, category: 'Tools' }))
+    ];
+
+    // Sort skills by level
+    allSkills.sort((a, b) => b.level - a.level);
+
+    // Create the radar chart
+    new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: allSkills.map(s => s.name),
+            datasets: [{
+                label: 'Skill Level',
+                data: allSkills.map(s => s.level),
+                backgroundColor: 'rgba(100, 255, 218, 0.2)',
+                borderColor: 'rgba(100, 255, 218, 0.8)',
+                borderWidth: 2,
+                pointBackgroundColor: allSkills.map(s => s.color),
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(100, 255, 218, 1)',
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    angleLines: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    pointLabels: {
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        font: {
+                            size: 12
+                        }
+                    },
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.5)',
+                        backdropColor: 'transparent',
+                        stepSize: 20
+                    },
+                    suggestedMin: 0,
+                    suggestedMax: 100
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(17, 25, 40, 0.9)',
+                    titleColor: 'rgba(100, 255, 218, 1)',
+                    bodyColor: '#fff',
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                    borderWidth: 1,
+                    padding: 10,
+                    displayColors: false,
+                    callbacks: {
+                        title: (items) => {
+                            const skill = allSkills[items[0].dataIndex];
+                            return `${skill.name} (${skill.category})`;
+                        },
+                        label: (item) => `Proficiency: ${item.raw}%`
+                    }
+                }
+            }
+        }
+    });
+}
+
+function renderSkills(skills) {
+    // Render each skill category
+    Object.entries(skills).forEach(([category, skillList]) => {
+        const container = document.getElementById(`${category}-skills`);
+        if (!container) return;
+
+        skillList.forEach(skill => {
+            const skillItem = document.createElement('div');
+            skillItem.className = 'skill-item';
+            skillItem.innerHTML = `
+                <div class="skill-info">
+                    <span class="skill-name">${skill.name}</span>
+                    <span class="skill-level">${skill.level}%</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="background-color: ${skill.color}"></div>
+                </div>
+            `;
+            container.appendChild(skillItem);
+
+            // Animate skill progress after a short delay
+            setTimeout(() => {
+                const progressBar = skillItem.querySelector('.skill-progress');
+                progressBar.style.width = `${skill.level}%`;
+            }, 200);
+        });
+    });
+}
+
+function renderProjects(projects) {
+    const projectGrid = document.getElementById('project-grid');
+    if (!projectGrid) return;
+
+    projectGrid.innerHTML = projects.map(project => `
+        <div class="project-card fade-in">
+            <div class="project-content">
+                <h3>${project.title}</h3>
+                <p>${project.description}</p>
+                <div class="project-tech">
+                    ${project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+                </div>
+            </div>
+            <div class="project-links">
+                <a href="${project.github}" class="btn" target="_blank">View Project</a>
+            </div>
+        </div>
+    `).join('');
+
+    // Observe project cards for fade-in animation
+    document.querySelectorAll('.project-card').forEach(card => {
+        observer.observe(card);
+    });
+}
+
+// Initialize portfolio data when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    loadPortfolioData();
 });

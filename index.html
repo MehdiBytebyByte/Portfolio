@@ -31,8 +31,8 @@
                 </div>
                 <ul class="nav-links">
                     <li><a href="#home">Home</a></li>
-                    <li><a href="#skills">Skills</a></li>
                     <li><a href="#projects">Projects</a></li>
+                    <li><a href="#skills">Skills</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </div>
@@ -88,14 +88,7 @@
             </div>
         </div>
     </section>
-    <section id="skills" class="skills-section">
-        <h2>Skills & Expertise</h2>
-        <div class="skills-container">
-            <div class="skills-graph">
-                <!-- Skills will be dynamically generated -->
-            </div>
-        </div>
-    </section>
+
     <section id="projects" class="projects">
         <h2>Featured Projects</h2>
         <div class="project-grid">
@@ -161,6 +154,29 @@
         </div>
     </section>
 
+    <section id="skills" class="skills-section">
+        <h2>Skills & Expertise</h2>
+        <div class="skills-container">
+            <div class="skill-graph-container">
+                <canvas id="skillGraph"></canvas>
+            </div>
+            <div class="skill-details">
+                <div class="skill-category">
+                    <h3>Programming Languages</h3>
+                    <div class="skill-graphs" id="languages-skills"></div>
+                </div>
+                <div class="skill-category">
+                    <h3>Frameworks & Libraries</h3>
+                    <div class="skill-graphs" id="frameworks-skills"></div>
+                </div>
+                <div class="skill-category">
+                    <h3>Tools & Technologies</h3>
+                    <div class="skill-graphs" id="tools-skills"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="contact" class="contact">
         <h2>Contact Me</h2>
         <div class="contact-content">
@@ -173,10 +189,10 @@
     </section>
 
     <footer>
-        <p>&copy; 2024 Mehdi Boughrara. All rights reserved.</p>
-        <small><a href="admin.html" style="opacity: 0.5; font-size: 0.8em;">Admin</a></small>
+        <p>&copy; 2024 Mehdi Boughrara. Built with <span class="highlight">❤️</span> at 42</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
