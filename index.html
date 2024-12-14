@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mehdi Boughrara | 42 Student Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="space-background">
+        <div id="stars"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
+        <div class="rocket-container">
+            <div class="rocket-trail"></div>
+            <div class="rocket">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.4 8.6C13.4 9.25228 12.8523 9.8 12.2 9.8C11.5477 9.8 11 9.25228 11 8.6C11 7.94772 11.5477 7.4 12.2 7.4C12.8523 7.4 13.4 7.94772 13.4 8.6Z" fill="#64ffda"/>
+                    <path d="M12 2C12 2 16.7 3.13 19.5 5.9C22.3 8.67 23 13 23 13C23 13 22.3 17.33 19.5 20.1C16.7 22.87 12 24 12 24C12 24 7.3 22.87 4.5 20.1C1.7 17.33 1 13 1 13C1 13 1.7 8.67 4.5 5.9C7.3 3.13 12 2 12 2Z" fill="#64ffda"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+    <header>
+        <nav>
+            <div class="nav-content">
+                <div class="logo">
+                    <a href="#home"><span class="highlight">MB</span></a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <p class="hero-greeting">Hi there! I'm</p>
+                <h1><span class="highlight">Mehdi Boughrara</span></h1>
+                <h2 class="hero-subtitle">Building the future, one line of code at a time</h2>
+                <p class="hero-description">I'm a software developer and 42 student passionate about creating elegant solutions to complex problems. Currently focused on systems programming and low-level development.</p>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">7+</span>
+                        <span class="stat-label">Core Projects</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">C/C++</span>
+                        <span class="stat-label">Main Focus</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">42</span>
+                        <span class="stat-label">Network Student</span>
+                    </div>
+                </div>
+
+                <div class="hero-cta">
+                    <a href="#projects" class="btn btn-primary">View My Work</a>
+                    <a href="https://github.com/MehdiBytebyByte" class="btn btn-secondary" target="_blank">GitHub Profile</a>
+                </div>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://github.com/MehdiBytebyByte" target="_blank" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.instagram.com/b_m3hdi/" target="_blank" title="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://discord.com/users/189363075759996928" target="_blank" title="Discord">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
+
+            <div class="scroll-indicator">
+                <div class="mouse">
+                    <div class="wheel"></div>
+                </div>
+                <div class="arrow"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <h2>Featured Projects</h2>
+        <div class="project-grid">
+            <div class="project-card">
+                <div class="project-content">
+                    <h3>42 Minishell</h3>
+                    <p>A sophisticated shell implementation featuring command execution, pipes, redirections, and environment variable management. Built using C, this project demonstrates deep understanding of process management and Unix systems.</p>
+                </div>
+                <div class="project-links">
+                    <a href="https://github.com/MehdiBytebyByte/42Minishell" class="btn" target="_blank">View Project</a>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-content">
+                    <h3>Philosophers</h3>
+                    <p>An elegant solution to the dining philosophers problem, implementing advanced concepts of thread management, mutex locks, and process synchronization to prevent deadlocks and resource conflicts.</p>
+                </div>
+                <div class="project-links">
+                    <a href="https://github.com/MehdiBytebyByte/42Philosophers" class="btn" target="_blank">View Project</a>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-content">
+                    <h3>So Long</h3>
+                    <p>A creative 2D game engine built with MinilibX, featuring smooth animations, collision detection, and event handling. Demonstrates graphics programming and game development fundamentals.</p>
+                </div>
+                <div class="project-links">
+                    <a href="https://github.com/MehdiBytebyByte/so_long42" class="btn" target="_blank">View Project</a>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-content">
+                    <h3>Minitalk</h3>
+                    <p>A robust client-server communication system utilizing UNIX signals for data transfer. Implements binary signal handling and process communication with error handling and data integrity checks.</p>
+                </div>
+                <div class="project-links">
+                    <a href="https://github.com/MehdiBytebyByte/Minitalk42" class="btn" target="_blank">View Project</a>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-content">
+                    <h3>ft_printf</h3>
+                    <p>A complete recreation of the printf function supporting various format specifiers. Implements variable arguments handling, string formatting, and precise memory management.</p>
+                </div>
+                <div class="project-links">
+                    <a href="https://github.com/MehdiBytebyByte/printf42" class="btn" target="_blank">View Project</a>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-content">
+                    <h3>Libft</h3>
+                    <p>A comprehensive C library featuring custom implementations of standard functions, including string manipulation, memory management, and linked list operations. The foundation of all 42 projects.</p>
+                </div>
+                <div class="project-links">
+                    <a href="https://github.com/MehdiBytebyByte/Libft42" class="btn" target="_blank">View Project</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2>Contact Me</h2>
+        <div class="contact-content">
+            <div class="social-links">
+                <a href="https://github.com/MehdiBytebyByte" target="_blank" title="GitHub"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://www.instagram.com/b_m3hdi/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="https://discord.com/users/189363075759996928" target="_blank" title="Discord"><i class="fab fa-discord"></i> Discord</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Mehdi Boughrara. Built with <span class="highlight">❤️</span> at 42</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
