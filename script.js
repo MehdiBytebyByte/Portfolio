@@ -441,3 +441,56 @@ function renderProjects(projects) {
 document.addEventListener('DOMContentLoaded', () => {
     loadPortfolioData();
 });
+
+// Initialize EmailJS
+(function() {
+    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+})();
+
+// Contact form handling
+document.getElementById('contact-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const submitBtn = this.querySelector('.submit-btn');
+    const formMessage = document.createElement('div');
+    formMessage.className = 'form-message';
+    this.appendChild(formMessage);
+
+    // Show loading state
+    submitBtn.classList.add('loading');
+
+    // Get form data
+    const formData = {
+        name: this.name.value,
+        email: this.email.value,
+        subject: this.subject.value,
+        message: this.message.value,
+        to_email: 'mehdiboughrara15@gmail.com'
+    };
+
+    // Send email using EmailJS
+    emailjs.send('default_service', 'template_id', formData) // Replace with your service and template IDs
+        .then(() => {
+            // Show success message
+            formMessage.textContent = 'Message sent successfully!';
+            formMessage.classList.add('success', 'show');
+            
+            // Reset form
+            this.reset();
+        })
+        .catch((error) => {
+            // Show error message
+            formMessage.textContent = 'Failed to send message. Please try again.';
+            formMessage.classList.add('error', 'show');
+            console.error('Email error:', error);
+        })
+        .finally(() => {
+            // Hide loading state
+            submitBtn.classList.remove('loading');
+            
+            // Remove message after 5 seconds
+            setTimeout(() => {
+                formMessage.remove();
+            }, 5000);
+        });
+});
