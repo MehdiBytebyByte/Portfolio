@@ -286,3 +286,379 @@ document.addEventListener('DOMContentLoaded', () => {
     initSpaceBackground();
     initRocket();
 });
+
+// Game Manager
+const gameManager = {
+    init() {
+        this.setupGameSelector();
+        memoryGame.init();
+        puzzleGame.init();
+    },
+
+    setupGameSelector() {
+        const gameButtons = document.querySelectorAll('.game-type-btn');
+        const gameContainers = document.querySelectorAll('.game-container');
+
+        gameButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const gameType = btn.dataset.game;
+                
+                // Update buttons
+                gameButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Update containers
+                gameContainers.forEach(container => {
+                    container.classList.remove('active');
+                    if (container.id === `${gameType}-game`) {
+                        container.classList.add('active');
+                    }
+                });
+
+                // Reset current game
+                if (gameType === 'memory') {
+                    memoryGame.restartGame();
+                } else {
+                    puzzleGame.restartGame();
+                }
+            });
+        });
+    }
+};
+
+// Memory Game Logic
+const memoryGame = {
+    gameContainer: document.querySelector('.memory-game'),
+    difficultyBtns: document.querySelectorAll('.difficulty-btn'),
+    hasFlippedCard: false,
+    lockBoard: false,
+    firstCard: null,
+    secondCard: null,
+    moves: 0,
+    timeStarted: false,
+    timer: null,
+    seconds: 0,
+    currentDifficulty: 'easy',
+
+    cardSets: {
+        easy: ['🎮', '🎲', '🎯', '🎨'],
+        medium: ['🎮', '🎲', '🎯', '🎨', '🎭', '🎪', '🎟️', '🎪'],
+        hard: ['🎮', '🎲', '🎯', '🎨', '🎭', '🎪', '🎟️', '🎪', '🎨', '🎭', '🎪', '🎟️']
+    },
+
+    createCard(emoji) {
+        const card = document.createElement('div');
+        card.className = 'memory-card';
+        card.dataset.framework = emoji;
+        
+        card.innerHTML = `
+            <div class="card-inner">
+                <div class="card-front"></div>
+                <div class="card-back">${emoji}</div>
+            </div>
+        `;
+        
+        card.addEventListener('click', () => this.flipCard(card));
+        return card;
+    },
+
+    init() {
+        this.setupDifficultyButtons();
+        this.setupGame('easy');
+        this.addEventListeners();
+        this.updateStats();
+    },
+
+    setupDifficultyButtons() {
+        this.difficultyBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.difficultyBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.setupGame(btn.dataset.difficulty);
+            });
+        });
+    },
+
+    setupGame(difficulty) {
+        this.currentDifficulty = difficulty;
+        this.gameContainer.innerHTML = '';
+        this.resetGame();
+
+        const emojis = [...this.cardSets[difficulty], ...this.cardSets[difficulty]];
+        const shuffledEmojis = this.shuffle(emojis);
+
+        // Set grid columns based on difficulty
+        const columns = difficulty === 'easy' ? 4 : (difficulty === 'medium' ? 4 : 6);
+        this.gameContainer.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+
+        shuffledEmojis.forEach(emoji => {
+            const card = this.createCard(emoji);
+            this.gameContainer.appendChild(card);
+        });
+    },
+
+    shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    },
+
+    addEventListeners() {
+        document.querySelector('.restart-button').addEventListener('click', () => this.restartGame());
+    },
+
+    flipCard(card) {
+        if (this.lockBoard || card === this.firstCard) return;
+        
+        if (!this.timeStarted) {
+            this.startTimer();
+            this.timeStarted = true;
+        }
+
+        card.classList.add('flipped');
+
+        if (!this.hasFlippedCard) {
+            this.hasFlippedCard = true;
+            this.firstCard = card;
+            return;
+        }
+
+        this.secondCard = card;
+        this.moves++;
+        this.updateStats();
+        this.checkForMatch();
+    },
+
+    checkForMatch() {
+        const isMatch = this.firstCard.dataset.framework === this.secondCard.dataset.framework;
+        isMatch ? this.disableCards() : this.unflipCards();
+    },
+
+    disableCards() {
+        this.firstCard.removeEventListener('click', () => this.flipCard);
+        this.secondCard.removeEventListener('click', () => this.flipCard);
+        this.resetBoard();
+        
+        // Check if game is complete
+        const allMatched = [...document.querySelectorAll('.memory-card')]
+            .every(card => card.classList.contains('flipped'));
+        
+        if (allMatched) {
+            clearInterval(this.timer);
+            setTimeout(() => {
+                alert(`🎉 Congratulations! You won on ${this.currentDifficulty} difficulty in ${this.moves} moves and ${this.seconds} seconds! 🎉`);
+            }, 500);
+        }
+    },
+
+    unflipCards() {
+        this.lockBoard = true;
+        setTimeout(() => {
+            this.firstCard.classList.remove('flipped');
+            this.secondCard.classList.remove('flipped');
+            this.resetBoard();
+        }, 1000);
+    },
+
+    resetBoard() {
+        [this.hasFlippedCard, this.lockBoard] = [false, false];
+        [this.firstCard, this.secondCard] = [null, null];
+    },
+
+    startTimer() {
+        this.timer = setInterval(() => {
+            this.seconds++;
+            this.updateStats();
+        }, 1000);
+    },
+
+    updateStats() {
+        document.querySelector('.moves').textContent = `Moves: ${this.moves}`;
+        document.querySelector('.timer').textContent = `Time: ${this.seconds}s`;
+    },
+
+    resetGame() {
+        clearInterval(this.timer);
+        this.timeStarted = false;
+        this.seconds = 0;
+        this.moves = 0;
+        this.resetBoard();
+        this.updateStats();
+    },
+
+    restartGame() {
+        this.setupGame(this.currentDifficulty);
+    }
+};
+
+// Puzzle Game Logic
+const puzzleGame = {
+    board: document.querySelector('.puzzle-board'),
+    difficultyBtns: document.querySelectorAll('#puzzle-game .difficulty-btn'),
+    moves: 0,
+    timeStarted: false,
+    timer: null,
+    seconds: 0,
+    currentDifficulty: 'easy',
+    tiles: [],
+    emptyTile: null,
+
+    init() {
+        this.setupDifficultyButtons();
+        this.setupGame('easy');
+        this.addEventListeners();
+        this.updateStats();
+    },
+
+    setupDifficultyButtons() {
+        this.difficultyBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.difficultyBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.setupGame(btn.dataset.difficulty);
+            });
+        });
+    },
+
+    setupGame(difficulty) {
+        this.currentDifficulty = difficulty;
+        this.resetGame();
+
+        const size = this.getDifficultySize(difficulty);
+        this.board.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+        
+        // Create tiles
+        const totalTiles = size * size;
+        const numbers = Array.from({length: totalTiles - 1}, (_, i) => i + 1);
+        this.shuffle(numbers);
+        
+        this.board.innerHTML = '';
+        numbers.forEach(num => {
+            const tile = this.createTile(num);
+            this.board.appendChild(tile);
+            this.tiles.push(tile);
+        });
+
+        // Add empty tile
+        const emptyTile = this.createTile('', true);
+        this.board.appendChild(emptyTile);
+        this.emptyTile = emptyTile;
+        this.tiles.push(emptyTile);
+
+        this.updateTilePositions();
+    },
+
+    getDifficultySize(difficulty) {
+        return difficulty === 'easy' ? 3 : (difficulty === 'medium' ? 4 : 5);
+    },
+
+    createTile(number, isEmpty = false) {
+        const tile = document.createElement('div');
+        tile.className = `puzzle-tile${isEmpty ? ' empty' : ''}`;
+        if (!isEmpty) {
+            tile.textContent = number;
+            tile.addEventListener('click', () => this.moveTile(tile));
+        }
+        return tile;
+    },
+
+    moveTile(tile) {
+        if (!this.isAdjacent(tile)) return;
+
+        if (!this.timeStarted) {
+            this.startTimer();
+            this.timeStarted = true;
+        }
+
+        // Swap positions
+        const tileIndex = this.tiles.indexOf(tile);
+        const emptyIndex = this.tiles.indexOf(this.emptyTile);
+        this.tiles[emptyIndex] = tile;
+        this.tiles[tileIndex] = this.emptyTile;
+
+        this.updateTilePositions();
+        this.moves++;
+        this.updateStats();
+        
+        if (this.checkWin()) {
+            clearInterval(this.timer);
+            setTimeout(() => {
+                alert(`🎉 Congratulations! You solved the ${this.currentDifficulty} puzzle in ${this.moves} moves and ${this.seconds} seconds! 🎉`);
+            }, 500);
+        }
+    },
+
+    isAdjacent(tile) {
+        const size = this.getDifficultySize(this.currentDifficulty);
+        const tileIndex = this.tiles.indexOf(tile);
+        const emptyIndex = this.tiles.indexOf(this.emptyTile);
+        
+        const row = Math.floor(tileIndex / size);
+        const col = tileIndex % size;
+        const emptyRow = Math.floor(emptyIndex / size);
+        const emptyCol = emptyIndex % size;
+
+        return (
+            (Math.abs(row - emptyRow) === 1 && col === emptyCol) ||
+            (Math.abs(col - emptyCol) === 1 && row === emptyRow)
+        );
+    },
+
+    updateTilePositions() {
+        this.tiles.forEach((tile, index) => {
+            tile.style.order = index;
+        });
+    },
+
+    checkWin() {
+        return this.tiles.every((tile, index) => {
+            if (tile === this.emptyTile) return true;
+            return parseInt(tile.textContent) === index + 1;
+        });
+    },
+
+    shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    },
+
+    startTimer() {
+        this.timer = setInterval(() => {
+            this.seconds++;
+            this.updateStats();
+        }, 1000);
+    },
+
+    updateStats() {
+        document.querySelector('#puzzle-game .moves').textContent = `Moves: ${this.moves}`;
+        document.querySelector('#puzzle-game .timer').textContent = `Time: ${this.seconds}s`;
+    },
+
+    resetGame() {
+        clearInterval(this.timer);
+        this.timeStarted = false;
+        this.seconds = 0;
+        this.moves = 0;
+        this.tiles = [];
+        this.emptyTile = null;
+        this.updateStats();
+    },
+
+    restartGame() {
+        this.setupGame(this.currentDifficulty);
+    },
+
+    addEventListeners() {
+        document.querySelector('#puzzle-game .restart-button').addEventListener('click', () => this.restartGame());
+    }
+};
+
+// Initialize games
+document.addEventListener('DOMContentLoaded', () => {
+    gameManager.init();
+});

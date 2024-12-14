@@ -88,6 +88,48 @@
         </div>
     </section>
 
+    <section id="games" class="games-section">
+        <h2>Mini Games</h2>
+        <div class="game-selector">
+            <button class="game-type-btn active" data-game="memory">Memory Game</button>
+            <button class="game-type-btn" data-game="puzzle">Sliding Puzzle</button>
+        </div>
+
+        <div id="memory-game" class="game-container active">
+            <p class="game-description">Test your memory with this fun card matching game!</p>
+            <div class="difficulty-selector">
+                <button class="difficulty-btn active" data-difficulty="easy">Easy (4×2)</button>
+                <button class="difficulty-btn" data-difficulty="medium">Medium (4×4)</button>
+                <button class="difficulty-btn" data-difficulty="hard">Hard (6×4)</button>
+            </div>
+            <div class="game-stats">
+                <span class="moves">Moves: 0</span>
+                <span class="timer">Time: 0s</span>
+            </div>
+            <div class="memory-game">
+                <!-- Cards will be dynamically generated -->
+            </div>
+            <button class="restart-button">Restart Game</button>
+        </div>
+
+        <div id="puzzle-game" class="game-container">
+            <p class="game-description">Slide the tiles to complete the image!</p>
+            <div class="difficulty-selector">
+                <button class="difficulty-btn active" data-difficulty="easy">Easy (3×3)</button>
+                <button class="difficulty-btn" data-difficulty="medium">Medium (4×4)</button>
+                <button class="difficulty-btn" data-difficulty="hard">Hard (5×5)</button>
+            </div>
+            <div class="game-stats">
+                <span class="moves">Moves: 0</span>
+                <span class="timer">Time: 0s</span>
+            </div>
+            <div class="puzzle-board">
+                <!-- Puzzle tiles will be dynamically generated -->
+            </div>
+            <button class="restart-button">Restart Game</button>
+        </div>
+    </section>
+
     <section id="projects" class="projects">
         <h2>Featured Projects</h2>
         <div class="project-grid">
