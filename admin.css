@@ -1,0 +1,182 @@
+/* Admin Styles */
+.admin-login {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-primary);
+}
+
+.login-container {
+    background: rgba(17, 25, 40, 0.95);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-container h2 {
+    color: var(--accent-primary);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    background: transparent;
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-group label {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top: -10px;
+    left: 5px;
+    font-size: 0.8rem;
+    color: var(--accent-primary);
+    background: rgba(17, 25, 40, 0.95);
+    padding: 0 5px;
+}
+
+.admin-panel {
+    min-height: 100vh;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.admin-header {
+    background: rgba(17, 25, 40, 0.95);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-form {
+    background: rgba(17, 25, 40, 0.95);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.admin-form input,
+.admin-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    background: transparent;
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.admin-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+button {
+    background: var(--accent-primary);
+    color: var(--bg-primary);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-2px);
+}
+
+.logout-btn {
+    background: transparent;
+    border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.logout-btn:hover {
+    background: rgba(100, 255, 218, 0.1);
+}
+
+.projects-list,
+.skills-list {
+    background: rgba(17, 25, 40, 0.95);
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.project-item,
+.skill-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-btn {
+    background: #ff4757;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+}
+
+.delete-btn:hover {
+    background: #ff6b81;
+}
+
+.project-item h3,
+.skill-item h3 {
+    color: var(--accent-primary);
+    margin: 0;
+}
+
+.skill-level {
+    background: rgba(100, 255, 218, 0.1);
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-left: 1rem;
+}
+
+@media (max-width: 768px) {
+    .admin-content {
+        padding: 1rem;
+    }
+    
+    .admin-form {
+        padding: 1rem;
+    }
+}
